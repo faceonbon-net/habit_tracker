@@ -28,14 +28,28 @@ def save_habits(data):
         with open("habits.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
     except IOError:
-        print("Ошибка при сохранении данных.")           
+        print("Ошибка при сохранении данных.")
+        
+def add_habit(data):
+    title = input("введите название привычки:")
+    if title in data:
+        print("такая привычка уже добавлена")
+    else:
+        data[title] = [0] * 7
+        save_habits(data)
+        
+def mark_habit(data):
+    if data == "":
+        print("Уже отмечено")
+    
+        
 def main():
     data = load_habits()
     while True:
         print(MENU)
         vibor = input("выберите действие:")
         if vibor == "1":
-            print("добавление привычки")
+            add_habit(data)
         elif vibor == "2":
             print("отметка выполнения")
         elif vibor == "3":
