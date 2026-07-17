@@ -39,9 +39,36 @@ def add_habit(data):
         save_habits(data)
         
 def mark_habit(data):
-    if data == "":
-        print("Уже отмечено")
+    if not data:
+        print("нет привычек")
+        return
     
+    habits = list(data.keys())
+    print("\nСписок пирвычек:")
+    for i, habit in enumerate(habits, start=1):
+        print(f"{i}. {habit}")
+        
+    number = input("введите номер привычки: ")
+    if not number.isdigit():
+        print("Ошибка: нужно ввести число.")
+        return
+    number = int(number)
+    if number <1 or number > len(habits):
+        print("неверный номер привычки")
+        return
+    name = habits[number - 1]
+    data[name][0] = 1
+    print(f"привычка '{name}' отмечена")
+    
+def show_stats(data):
+    if not data:
+        print("нет привычек")
+        return
+    
+    for habit, days in data.items():
+        suma = sum(days)
+        percent = round((suma/7) * 100)
+        print(f"{habit}: {suma}/7 ({percent}%)")
         
 def main():
     data = load_habits()
@@ -51,9 +78,9 @@ def main():
         if vibor == "1":
             add_habit(data)
         elif vibor == "2":
-            print("отметка выполнения")
+            mark_habit(data)
         elif vibor == "3":
-            print("Статистика")
+            show_stats(data)
         elif vibor == "4":
             save_habits(data)
             print("данные сохранены!")
